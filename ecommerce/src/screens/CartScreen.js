@@ -114,11 +114,6 @@ const CartScreen = ({match, location, history}) => {
                                     Proceed to checkout
                                 </Button>
                     </ListGroup>
-
-                {/* Recap; add a button for proceed checkout that uses and onlclick handler that redirects to login if user isnt logged in otherwise redirects to shipping page
-                created an expression to add sum of items in cart
-                created an expression to add sum of total price of all items in the cart
-                created a form that will allow us to change the items in the cart were working in */}
                 </Card>
             </Col>
         </Row>

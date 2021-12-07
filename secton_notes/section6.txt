@@ -1,0 +1,16 @@
+installed jwt
+configured settings files to have access for 90 days instead of 5 minutes
+configured root url and settings
+
+set up serializers to 
+UserSerializer to grab custom data with serializers I created _id, status, first_name
+UserSerializerWithToken to provide a token for us to login with
+set up url.py path for users as well
+
+in base/views.py set 
+        serializer = UserSerializerWithToken(self.user).data
+        //self.user grabs the username the .data grabs all the fields for that user
+
+        // loop through serializer variable with key and value, set the data[k] = value ie... data[k] -> username: 'usrqzw'
+        for k, v in serializer.items():
+            data[k] = v

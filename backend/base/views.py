@@ -4,8 +4,10 @@ from rest_framework import serializers
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from django.contrib.auth.models import User
+
 from .models import Product
-from .serializers import ProductSerializer
+from .serializers import ProductSerializer, UserSerializer, UserSerializerWithToken
 
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -13,22 +15,25 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 # Create your classes here.
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
+    def validate(self, attrs):
+        data = super().validate(attrs)
 
-        # Add custom claims
-        token['username'] = user.username
-        token['message'] = 'hello world'
+        print(self.user.data)
+        serializer = UserSerializerWithToken(self.user).data
+
+        for k, v in serializer.items():
+            data[k] = v
 
 
-        return token
+        return data
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 
 # Create your views here.
+
+# Routes view
 @api_view(['GET'])
 def getRoutes(request):
 
@@ -44,6 +49,17 @@ def getRoutes(request):
     ]
     return Response(routes)
 
+# User Views
+@api_view(['GET'])
+def getUserProfile(request):
+
+    # send a token > token gets used in get request to the url that grabs data below
+    users = request.user
+    serializer = UserSerializer(users, many=False)
+    return Response(serializer.data)
+
+
+# Products views
 @api_view(['GET'])
 def getProducts(request):
     """Grab all products and its info"""

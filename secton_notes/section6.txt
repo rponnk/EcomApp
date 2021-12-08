@@ -19,4 +19,18 @@ in base/views.py set
 users now have to be authenticated to view their profile,
 users have to have admin perms to view every user and their info
 
+
+created a register user view to be used with UserSerializerWithToken
 created signals - this will help convert any usernames that arent using emails to user their emails
+
+Lastly, all files did a reorg, urls.py and views.py got moved into seperate folders and files for users, products and orders
+
+urls folder created
+views folder created
+
+base.urls and base.views files deleted
+
+backend.urls updated with correct paths
+verified this is working
+
+end of section 6

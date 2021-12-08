@@ -12,7 +12,7 @@ const Header = () => {
                 {/*The concept of using Link, LinkContainer works here as well, load a component instead of a new page */}
 
                 <LinkContainer to="/">
-                    <Navbar.Brand>GP</Navbar.Brand>
+                    <Navbar.Brand>Rocks Shop</Navbar.Brand>
                 </LinkContainer>
 
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />

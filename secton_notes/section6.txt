@@ -14,3 +14,9 @@ in base/views.py set
         // loop through serializer variable with key and value, set the data[k] = value ie... data[k] -> username: 'usrqzw'
         for k, v in serializer.items():
             data[k] = v
+
+
+users now have to be authenticated to view their profile,
+users have to have admin perms to view every user and their info
+
+created signals - this will help convert any usernames that arent using emails to user their emails

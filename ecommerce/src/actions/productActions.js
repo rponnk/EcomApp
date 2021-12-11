@@ -15,15 +15,13 @@ export const listProductAction = async (dispatch) => {
     try {
         dispatch({type: PRODUCT_REQ, payload: []})
         const { data } = await axios.get('/api/products/')
-
-        
         dispatch({type: PRODUCT_SUCCESS, payload: data})
     }
     catch (error) {
         dispatch({
             type: PRODUCT_FAIL, 
-            payload: error.response && error.response.data.message 
-            ? error.response.data.message 
+            payload: error.response && error.response.data.detail 
+            ? error.response.data.detail 
             : error.message
         })
     }
@@ -45,8 +43,8 @@ export const listProductDetailsAction = (pk) => async (dispatch) => {
     catch (error) {
         dispatch({
             type: PRODUCT_DETAILS_FAIL, 
-            payload: error.response && error.response.data.message 
-            ? error.response.data.message 
+            payload: error.response && error.response.data.detail 
+            ? error.response.data.detail 
             : error.message
         })        
     }

@@ -1,5 +1,8 @@
 import axios from 'axios'
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../constants/cartConstants'
+import { CART_ADD_ITEM, 
+    CART_REMOVE_ITEM,
+    CART_EMPTY
+ } from '../constants/cartConstants'
 
 
 export const addToCartAction = (pk, qty ) => async (dispatch, getState) => {
@@ -32,4 +35,11 @@ export const removeFromCartAction = (pk) => (dispatch, getState) => {
     })
         //pass in k/v pair - 
     localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))    
+}
+
+export const emptyCart = () => dispatch => {
+    localStorage.setItem('cartItems', [])  
+    dispatch({
+        type: CART_EMPTY
+    })
 }

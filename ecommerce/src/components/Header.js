@@ -2,14 +2,23 @@ import React from 'react'
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../actions/userActions';
+import { emptyCart } from '../actions/cartActions';
+
 
 const Header = () => {
 
     const userLogin = useSelector(state => state.userLogin)
     const {userInfo} = userLogin
 
+    const dispatch = useDispatch()
+
     const logoutHandler = () => {
-        
+        dispatch(logout())
+    }
+
+    const emptyCartHandler = () => {
+        dispatch(emptyCart())
     }
 
     return (
@@ -27,14 +36,18 @@ const Header = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
+                    <NavDropdown title='Shopping Cart'>
                     <LinkContainer to="/cart">
-                        <Nav.Link >Cart <i className="fa-solid fa-cart-shopping"></i></Nav.Link>
+                        <NavDropdown.Item >Cart <i className="fa-solid fa-cart-shopping"></i></NavDropdown.Item>
                     </LinkContainer>
+                    <NavDropdown.Item onClick={emptyCartHandler}>Empty Cart</NavDropdown.Item>
+                    </NavDropdown>
+
 
                     {userInfo ? (
                         <NavDropdown title={userInfo.name} id='username'>
                             <LinkContainer to='/profile'>
-                                <NavDropdown.Item>Profile</NavDropdown.Item>
+                                <NavDropdown.Item>Account</NavDropdown.Item>
                             </LinkContainer>
                             <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
                         </NavDropdown>

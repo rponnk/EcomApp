@@ -22,3 +22,4 @@ then added userLogin to initialState
 issues -
 
 frontend submit is making call not to the backend
+having login button dissapear after user is logged in and making a drop down to logout or go to user profile

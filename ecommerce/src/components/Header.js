@@ -6,10 +6,14 @@ import { logout } from '../actions/userActions';
 import { emptyCart } from '../actions/cartActions';
 
 
+
 const Header = () => {
 
     const userLogin = useSelector(state => state.userLogin)
     const {userInfo} = userLogin
+
+    const cart = useSelector(state => state.cart)
+    const {cartItems} = cart
 
     const dispatch = useDispatch()
 
@@ -30,7 +34,7 @@ const Header = () => {
                 {/*The concept of using Link, LinkContainer works here as well, load a component instead of a new page */}
 
                 <LinkContainer to="/">
-                    <Navbar.Brand>Rocks Shop</Navbar.Brand>
+                    <Navbar.Brand>ProShop</Navbar.Brand>
                 </LinkContainer>
 
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -38,9 +42,13 @@ const Header = () => {
                 <Nav className="me-auto">
                     <NavDropdown title='Shopping Cart'>
                     <LinkContainer to="/cart">
-                        <NavDropdown.Item >Cart <i className="fa-solid fa-cart-shopping"></i></NavDropdown.Item>
+                        <NavDropdown.Item >Cart <i className="fa-solid fa-cart-shopping"></i>{cartItems.reduce((acc, itemInCart) => acc + itemInCart.qty, '')}</NavDropdown.Item>
                     </LinkContainer>
-                    <NavDropdown.Item onClick={emptyCartHandler}>Empty Cart</NavDropdown.Item>
+                    {
+                        cartItems.length > 0 
+                        ? <NavDropdown.Item onClick={emptyCartHandler}>Empty Cart</NavDropdown.Item> 
+                        : ''
+                    }
                     </NavDropdown>
 
 

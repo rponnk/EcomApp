@@ -1,6 +1,6 @@
 created constants
-created the reduceers
--state will be empty for userloging
+created the reducers
+-state will be empty for userlogin
 
 registered userLoginReducer in store.js
 created userActions file

@@ -7,7 +7,10 @@ import {
  } from './reducers/productReducers'
 
 import { cartReducer } from './reducers/cartReducers'
-import { userLoginReducer } from './reducers/userReducers'
+import { 
+    userLoginReducer, 
+    userRegisterReducer 
+} from './reducers/userReducers'
 
 
 //reducer will be an empty object which will take key value pairs later, this will change the initialState - register here
@@ -15,7 +18,8 @@ const reducer = combineReducers({
     productList: productListReducer,
     productDetails: productDetailsReducer,
     cart: cartReducer,
-    userLogin: userLoginReducer
+    userLogin: userLoginReducer,
+    userRegister: userRegisterReducer,
 })
 
 /* revert json string back into json */

@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import FormContainer from '../components/FormContainer'
-import { register } from '../actions/userActions'
+import { profile, userUpdateProfile } from '../actions/userActions'
+import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
 
-function RegisterScreen({ location, history }) {
+const ProfileScreen = ({history}) => {
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -17,16 +16,28 @@ function RegisterScreen({ location, history }) {
 
     const dispatch = useDispatch()
 
-    const redirect = location.search ? location.search.split('=')[1] : '/'
+    const userProfile = useSelector(state => state.userProfile)
+    const { error, loading, user} = userProfile
 
-    const userRegister = useSelector(state => state.userRegister)
-    const { error, loading, userInfo } = userRegister
+    const userLogin = useSelector(state => state.userLogin)
+    const {userInfo} = userLogin
+
+    const userUpdate = useSelector(state => state.userUpdate)
+    const {success} = userUpdate
 
     useEffect(() => {
-        if (userInfo) {
-            history.push(redirect)
+        if (!userInfo) {
+            history.push('/login')
+        } else {
+            if(!user || !user.name) {
+                dispatch({ type: USER_UPDATE_PROFILE_RESET })
+                dispatch(profile('profile'))
+            } else {
+                setName(user.name)
+                setEmail(user.email)
+            }
         }
-    }, [history, userInfo, redirect])
+    }, [dispatch, history, userInfo, user, success])
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -34,14 +45,23 @@ function RegisterScreen({ location, history }) {
         if (password !== confirmPassword) {
             setMessage('Passwords do not match')
         } else {
-            dispatch(register(name, email, password))
+            dispatch(userUpdateProfile({
+                'id': user._id,
+                'name': name,
+                'email': email,
+                'password': password
+                
+            }))
+            setMessage('')
         }
-
     }
 
+
     return (
-        <FormContainer>
-            <h1>Sign In</h1>
+        <Row>
+            <Col md={3}>
+                <h2>User Profile</h2>
+
             {message && <Message variant='danger'>{message}</Message>}
             {error && <Message variant='danger'>{error}</Message>}
             {loading && <Loader />}
@@ -62,7 +82,6 @@ function RegisterScreen({ location, history }) {
                 <Form.Group controlId='email'>
                     <Form.Label>Email Address</Form.Label>
                     <Form.Control
-                        required
                         type='email'
                         placeholder='Enter Email'
                         value={email}
@@ -72,11 +91,10 @@ function RegisterScreen({ location, history }) {
                 </Form.Group>
 
                 <Form.Group controlId='password'>
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>New Password</Form.Label>
                     <Form.Control
-                        required
                         type='password'
-                        placeholder='Enter Password'
+                        placeholder='Enter New Password'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     >
@@ -84,11 +102,10 @@ function RegisterScreen({ location, history }) {
                 </Form.Group>
 
                 <Form.Group controlId='passwordConfirm'>
-                    <Form.Label>Confirm Password</Form.Label>
+                    <Form.Label>Confirm New Password</Form.Label>
                     <Form.Control
-                        required
                         type='password'
-                        placeholder='Confirm Password'
+                        placeholder='Confirm New Password'
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     >
@@ -96,21 +113,16 @@ function RegisterScreen({ location, history }) {
                 </Form.Group>
 
                 <Button type='submit' variant='primary'>
-                    Register
+                    Update
                 </Button>
-
             </Form>
+            </Col>
 
-            <Row className='py-3'>
-                <Col>
-                    Have an Account? <Link
-                        to={redirect ? `/login?redirect=${redirect}` : '/login'}>
-                        Sign In
-                        </Link>
-                </Col>
-            </Row>
-        </FormContainer >
+            <Col md={9}>
+                <h2>My Orders</h2>
+            </Col>
+        </Row>
     )
 }
 
-export default RegisterScreen
+export default ProfileScreen

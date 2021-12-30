@@ -48,6 +48,30 @@ def registerUser(request):
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 # User views
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateUserProfile(request):
+
+    '''Allow the user to update thier profile, password, username, etc...'''
+    
+    # send a token > token gets used in get request to the url that grabs data below
+    user = request.user
+    serializer = UserSerializerWithToken(user, many=False)
+    
+    data = request.data 
+    user.first_name = data['name']
+    user.username = data['email']
+    user.email = data['email']
+    
+    # check the password first before changing
+    if data['password'] != '':
+        user.password = make_password(data['password'])
+    
+    user.save()
+    
+    return Response(serializer.data)
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getUserProfile(request):

@@ -9,7 +9,9 @@ import {
 import { cartReducer } from './reducers/cartReducers'
 import { 
     userLoginReducer, 
-    userRegisterReducer 
+    userRegisterReducer,
+    userProfileReducer,
+    userUpdateProfileReducer,
 } from './reducers/userReducers'
 
 
@@ -20,6 +22,8 @@ const reducer = combineReducers({
     cart: cartReducer,
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
+    userProfile: userProfileReducer,
+    userUpdate: userUpdateProfileReducer,
 })
 
 /* revert json string back into json */

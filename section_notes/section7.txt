@@ -19,8 +19,14 @@ if the data is blank it will return null otherwise will parse the data received 
 
 then added userLogin to initialState
 
-issues -
+worked on authentication ensuring that JWT token was taken and checked for each user for validation on login, account, checkout, cart etc...
+allowed users to change their profile information and ensuring it was gathering the right user
+added the constants, reducers and actions for this
 
-frontend submit is making call not to the backend
-having login button dissapear after user is logged in and making a drop down to logout or go to user profile
-empty cart - cant remove item as this only removes the key, have to set localStorage instead
+
+issue(s) -
+
+frontend submit is making call not to the backend - fixed
+having login button dissapear after user is logged in and making a drop down to logout or go to user profile - fixed
+empty cart - cant remove item as this only removes the key, have to set localStorage instead - fixed
+

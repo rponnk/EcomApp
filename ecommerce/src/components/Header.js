@@ -2,7 +2,7 @@ import React from 'react'
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../actions/userActions';
+import { logout,  } from '../actions/userActions';
 import { emptyCart } from '../actions/cartActions';
 
 
@@ -54,7 +54,7 @@ const Header = () => {
 
                     {userInfo ? (
                         <NavDropdown title={userInfo.name} id='username'>
-                            <LinkContainer to='/profile'>
+                            <LinkContainer to='/profile/'>
                                 <NavDropdown.Item>Account</NavDropdown.Item>
                             </LinkContainer>
                             <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>

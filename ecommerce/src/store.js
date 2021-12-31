@@ -26,7 +26,12 @@ const reducer = combineReducers({
     userUpdate: userUpdateProfileReducer,
 })
 
-/* revert json string back into json */
+/* 
+revert json string back into json 
+getItem(???) = the param comes from whatever we named it when we setItem in localStorage in actions
+
+check if its true, if not parse the data otherwise well return null
+*/
 
 const cartItemsFromStorage = localStorage.getItem('cartItems') ?
         JSON.parse(localStorage.getItem('cartItems')) : []
@@ -35,12 +40,17 @@ const cartItemsFromStorage = localStorage.getItem('cartItems') ?
 const userInfoFromStorage = localStorage.getItem('userInfo') ?
         JSON.parse(localStorage.getItem('userInfo')) : null
 
+const shippingAddressFromStorage = localStorage.getItem('shippingAddress') ?
+        JSON.parse(localStorage.getItem('shippingAddress')) : {}
+
 //initial state will be an empty object
 const initialState = {
-    cart: {cartItems: cartItemsFromStorage},
+    cart: {
+        cartItems: cartItemsFromStorage,
+        shippingAddress: shippingAddressFromStorage,
+    },
     userLogin: {userInfo: userInfoFromStorage}
 }
-
 
 const middleWare = [thunk]
 

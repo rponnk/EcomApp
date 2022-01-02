@@ -19,6 +19,7 @@ const Header = () => {
 
     const logoutHandler = () => {
         dispatch(logout())
+        dispatch(emptyCart())
     }
 
     const emptyCartHandler = () => {

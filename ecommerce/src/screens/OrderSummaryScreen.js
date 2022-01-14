@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import {
     Row, 
-    Button, 
     Col, 
     ListGroup, 
     Image, 
@@ -9,7 +8,6 @@ import {
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import Message from '../components/Message';
 
 const OrderSummaryScreen = ({history}) => {
 

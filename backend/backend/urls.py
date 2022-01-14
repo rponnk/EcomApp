@@ -27,7 +27,7 @@ urlpatterns = [
     #path('api/', include('base.urls')),
     path('api/products/', include('base.urls.product_urls')),
     path('api/users/', include('base.urls.user_urls')),
-    path('api/order/', include('base.urls.order_urls')),
+    path('api/orders/', include('base.urls.order_urls')),
     path('api-auth/', include('rest_framework.urls')),
     
 ]

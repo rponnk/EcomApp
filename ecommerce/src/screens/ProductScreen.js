@@ -43,11 +43,11 @@ function ProductScreen({ match, history }) {
                 :  <div>
                 
                 <Row>
-                    <Col className='my-3' md={6}>                
+                    <Col className='my-3' md={3}>                
                         <Image className='rounded' src={product.image} alt={product.name} fluid />   
                     </Col>
     
-                    <Col className='my-3' md={3}>
+                    <Col className='my-3' md={6}>
                        
                             <ListGroup variant="flush">
     

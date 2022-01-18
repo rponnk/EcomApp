@@ -13,6 +13,7 @@ import Message from '../components/Message';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { createOrder } from '../actions/orderActions';
 import { ORDER_CREATE_RESET } from '../constants/orderConstants';
+import { emptyCart } from '../actions/cartActions';
 
 const CheckoutScreen = ({history}) => {
 
@@ -24,7 +25,7 @@ const CheckoutScreen = ({history}) => {
         return state.cart;
     });
     // destructure the cart
-    const { cartItems, shippingAddress, paymentMethod } = cart;
+    const { cartItems } = cart;
     const dispatch = useDispatch();
 
     cart.itemsPrice = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2)
@@ -44,9 +45,10 @@ const CheckoutScreen = ({history}) => {
         if(success) {
            history.push(`/order/${order._id}`) 
            dispatch({type: ORDER_CREATE_RESET})
+           
         }
         
-    }, [success, history])
+    }, [dispatch, success, history, order])
 
     const placeOrder = () => {
         dispatch(createOrder({
@@ -58,6 +60,12 @@ const CheckoutScreen = ({history}) => {
             taxPrice: cart.taxPrice,
             totalPrice: cart.totalPrice,
         }))
+    }
+
+    const cancelOrder = () => {
+        history.push('')
+        dispatch({type: ORDER_CREATE_RESET })
+        dispatch(emptyCart())
     }
 
     return (
@@ -173,6 +181,15 @@ const CheckoutScreen = ({history}) => {
                                     onClick={placeOrder}
                                 >
                                     Place Order
+                                </Button>
+                            </ListGroup.Item>
+                            <ListGroup.Item>
+                                <Button
+                                    type='button'
+                                    className='btn-block'
+                                    onClick={cancelOrder}
+                                >
+                                    Cancel Order
                                 </Button>
                             </ListGroup.Item>
 

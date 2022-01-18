@@ -7,7 +7,12 @@ import {
  } from './reducers/productReducers'
 
 import { cartReducer } from './reducers/cartReducers'
-import { orderCreateReducer } from './reducers/orderReducers'
+import { 
+    orderCreateReducer, 
+    orderDetailsReducer,
+    orderPayReducer,
+    orderListMyReducer
+} from './reducers/orderReducers'
 import { 
     userLoginReducer, 
     userRegisterReducer,
@@ -18,14 +23,22 @@ import {
 
 //reducer will be an empty object which will take key value pairs later, this will change the initialState - register here
 const reducer = combineReducers({
+    
     productList: productListReducer,
     productDetails: productDetailsReducer,
+
     cart: cartReducer,
+
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
     userProfile: userProfileReducer,
     userUpdate: userUpdateProfileReducer,
+
     orderCreate: orderCreateReducer,
+    orderDetails: orderDetailsReducer,
+    orderPay: orderPayReducer,
+    orderListMy: orderListMyReducer,
+    
 })
 
 /* 

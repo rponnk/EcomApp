@@ -1,25 +1,44 @@
-import React, { useState, useEffect } from 'react'
-import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
+import React, { useEffect, useState } from 'react'
+import {  Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
+import { PayPalButton } from 'react-paypal-button-v2'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { getOrderDetails } from '../actions/orderActions'
+import { getOrderDetails, payOrder } from '../actions/orderActions'
+import { ORDER_PAY_RESET } from '../constants/orderConstants'
 
 
 function OrderSummaryScreen({ match, history }) {
     const orderId = match.params.pk
     const dispatch = useDispatch()
 
+    const [sdkReady, setSdkReady] = useState()
+
     const orderDetails = useSelector(state => state.orderDetails)
     const { order, error, loading } = orderDetails
+
+    const orderPay = useSelector(state => state.orderPay)
+    const { loading: loadingPay, success: successPay } = orderPay
 
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
 
+    //AdC8_C1QWU5iA1eLqxWiP0ZUT2tCNGOHtbKmuooDGXqd_L0EE45qD9HC0E_mHnYK0A1NrZltGb1dXIm5
 
     if (!loading && !error) {
         order.itemsPrice = order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2)
+    }
+
+    const addPayPalScript = () => {
+        const script = document.createElement('script')
+        script.type = 'text/javascript'
+        script.src = 'https://www.paypal.com/sdk/js?client-id=AdC8_C1QWU5iA1eLqxWiP0ZUT2tCNGOHtbKmuooDGXqd_L0EE45qD9HC0E_mHnYK0A1NrZltGb1dXIm5'
+        script.async = true
+        script.onload = () => {
+            setSdkReady(true)
+        }
+        document.body.appendChild(script)
     }
 
     useEffect(() => {
@@ -28,11 +47,21 @@ function OrderSummaryScreen({ match, history }) {
             history.push('/login')
         }
 
-        if (!order || order._id !== Number(orderId)) {
-              dispatch(getOrderDetails(orderId))
+        if (!order || successPay || order._id !== Number(orderId)) {
+            dispatch({type: ORDER_PAY_RESET})
+            dispatch(getOrderDetails(orderId))
+        } else if (!order.isPaid){
+            if(!window.paypal) {
+                addPayPalScript()
+            } else {
+                setSdkReady(true)
+            }
         }
-    }, [dispatch, order, orderId])
+    }, [dispatch, order, orderId, history, userInfo, successPay])
 
+    const successPaymentHandler = (paymentResult) => {
+        dispatch(payOrder(orderId, paymentResult))
+    }
 
     return loading ? (
         <Loader />
@@ -58,7 +87,7 @@ function OrderSummaryScreen({ match, history }) {
                                     </p>
 
                                     {order.isDelivered ? (
-                                        <Message variant='success'>Delivered on {String(new Date(order.deliveredAt))}</Message>
+                                        <Message variant='success'>Delivered on {order.deliveredAt.substring(0,10)}</Message>
                                     ) : (
                                             <Message variant='warning'>Not Delivered</Message>
                                         )}
@@ -71,7 +100,7 @@ function OrderSummaryScreen({ match, history }) {
                                         {order.paymentMethod}
                                     </p>
                                     {order.isPaid ? (
-                                        <Message variant='success'>Paid on {String(new Date(order.paidAt))}</Message>
+                                        <Message variant='success'>Paid on {order.paidAt.substring(0,10)}</Message>
                                     ) : (
                                             <Message variant='warning'>Not Paid</Message>
                                         )}
@@ -142,7 +171,23 @@ function OrderSummaryScreen({ match, history }) {
                                             <Col>Total:</Col>
                                             <Col>${order.totalPrice}</Col>
                                         </Row>
-                                    </ListGroup.Item>                 
+                                    </ListGroup.Item>       
+
+                                    {!order.isPaid && (
+                                        <ListGroup.Item>
+                                            {loadingPay && <Loader />}
+
+                                            {!sdkReady ? (
+                                                <Loader />
+                                            ) : (
+                                                    <PayPalButton
+                                                        amount={order.totalPrice}
+                                                        onSuccess={successPaymentHandler}
+                                                    />
+                                                )}
+                                        </ListGroup.Item>
+                                    )}
+
                                 </ListGroup>
                     
                             </Card>

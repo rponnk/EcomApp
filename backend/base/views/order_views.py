@@ -1,3 +1,4 @@
+from ast import Or
 from django.shortcuts import render
 
 from rest_framework.decorators import api_view, permission_classes
@@ -76,9 +77,20 @@ def getMyOrders(request):
 
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
-def getOrders(request):
+def getOrders():
     orders = Order.objects.all()
     serializer = OrderSerializer(orders, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getMyOrders(request):
+    user = request.user
+    order = Order.objects.all()
+    if user.is_staff:
+        serializer = OrderSerializer(order, many=True)
+    else:
+        serializer = OrderSerializer(order.filter(user=user), many=True)
     return Response(serializer.data)
 
 
@@ -87,7 +99,6 @@ def getOrders(request):
 def getOrderById(request, pk):
 
     user = request.user
-
     try:
         order = Order.objects.get(_id=pk)
         if user.is_staff or order.user == user:
@@ -99,3 +110,13 @@ def getOrderById(request, pk):
     except:
         return Response({'detail': 'Order does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateOrderToPaid(request, pk):
+    
+    order = Order.objects.get(_id=pk)
+    
+    order.isPaid = True
+    order.paidAt = datetime.now()
+    order.save()
+    return Response('Order was paid')

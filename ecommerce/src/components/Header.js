@@ -2,7 +2,7 @@ import React from 'react'
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout,  } from '../actions/userActions';
+import { logout  } from '../actions/userActions';
 import { emptyCart } from '../actions/cartActions';
 
 
@@ -43,7 +43,7 @@ const Header = () => {
                 <Nav className="me-auto">
                     <NavDropdown title='Shopping Cart'>
                     <LinkContainer to="/cart">
-                        <NavDropdown.Item >Cart <i className="fa-solid fa-cart-shopping"></i>{cartItems.reduce((acc, itemInCart) => acc + itemInCart.qty, '')}</NavDropdown.Item>
+                        <NavDropdown.Item >Cart <i className="fa-solid fa-cart-shopping"></i>{cartItems.reduce((acc, itemInCart) => acc + itemInCart.qty, '', 0)}</NavDropdown.Item>
                     </LinkContainer>
                     {
                         cartItems.length > 0 

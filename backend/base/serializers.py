@@ -15,6 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
     _id = serializers.SerializerMethodField(read_only=True)
     status_ = serializers.SerializerMethodField(read_only=True)
+    isAdmin = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
@@ -23,7 +24,8 @@ class UserSerializer(serializers.ModelSerializer):
             'username',
             'email',
             'name',
-            'status_'
+            'status_',
+            'isAdmin'
              ]
     """
     _status_ as an example would need method below to be like this def get_ _ status _ | this matches the naming convention
@@ -35,7 +37,10 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_status_(self, obj):
         return obj.is_active
-
+    
+    def get_isAdmin(self, obj):
+        return obj.is_staff
+    
     def get_name(self,obj):
 
         """ 
@@ -59,6 +64,7 @@ class UserSerializerWithToken(UserSerializer):
                 'email',
                 'name',
                 'status_',
+                'isAdmin',
                 'token'
                 ]
         def get_token(self, obj):

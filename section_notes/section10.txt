@@ -1,0 +1,18 @@
+# Summary - 
+# Create AdminScreen, only those with is_staff allowed to make changes, view profiles or all orders
+
+# Constants created
+## export const USER_LIST_REQUEST = 'USER_LIST_REQUEST'
+## export const USER_LIST_SUCCESS = 'USER_LIST_SUCCESS'
+## export const USER_LIST_FAIL = 'USER_LIST_FAIL'
+## export const USER_LIST_RESET = 'USER_LIST_RESET'
+
+# Reducer created
+## userListReducer
+
+# Registered userListReducer in store.js
+
+# Action Created
+## listUsers
+
+# Created UserListScreen.js -> registered in app.js

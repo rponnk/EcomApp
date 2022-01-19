@@ -35,7 +35,7 @@ const Header = () => {
                 {/*The concept of using Link, LinkContainer works here as well, load a component instead of a new page */}
 
                 <LinkContainer to="/">
-                    <Navbar.Brand>ProShop</Navbar.Brand>
+                    <Navbar.Brand>ЯS</Navbar.Brand>
                 </LinkContainer>
 
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -65,6 +65,20 @@ const Header = () => {
                         <Nav.Link >Login <i className="fa-solid fa-right-to-bracket"></i></Nav.Link>
                     </LinkContainer>
                     )}
+
+                    {userInfo && userInfo.isAdmin ? (
+                        <NavDropdown title='Admin' id='adminmenu'>
+                            <LinkContainer to='/admin/users'>
+                                <NavDropdown.Item>User List</NavDropdown.Item>
+                            </LinkContainer>
+
+                            <LinkContainer to='/admin/productlist'>
+                                <NavDropdown.Item>Product List</NavDropdown.Item>
+                            </LinkContainer>
+                            
+
+                        </NavDropdown>
+                            ): ''}
 
                 </Nav>
                 </Navbar.Collapse>

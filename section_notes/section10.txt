@@ -15,4 +15,8 @@
 # Action Created
 ## listUsers
 
-# Created UserListScreen.js -> registered in app.js
+## Created UserListScreen.js -> registered in app.js
+
+# Admin User Delete
+# Admin User Update
+

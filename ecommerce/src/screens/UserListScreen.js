@@ -4,22 +4,36 @@ import { Table, Button} from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { listUsers } from '../actions/userActions'
+import { listUsers, deleteUser } from '../actions/userActions'
 
-const UserListScreen = () => {
+const UserListScreen = ({ history }) => {
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
-    const userList = useSelector(state => state.userList)
-    const { loading, error, users } = userList
+    const userList = useSelector(state => state.userList);
+    const { loading, error, users } = userList;
+
+    const userLogin = useSelector(state => state.userLogin);
+    const { userInfo } = userLogin;
+
+    const userDelete = useSelector(state => state.userDelete);
+    const { success: successDelete } = userDelete;
 
     useEffect(() => {
-        dispatch(listUsers())
-    }, [dispatch])
+        //check if user is admin and logged in
+        if(userInfo && userInfo.isAdmin) {
+            dispatch(listUsers());
+        } else {
+            history.push('/login');
+        }
+        
+    }, [dispatch, history, successDelete]);
 
     const deleteById = (id) => {
-        console.log(id)
-    }
+        if(window.confirm(`Confirm user with id: ${id} for deletion?`)) {
+            dispatch(deleteUser(id))
+       }      
+    };
     return (
         <div>
             <h1>Users</h1>

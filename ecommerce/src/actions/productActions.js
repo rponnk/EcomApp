@@ -1,11 +1,12 @@
 import axios from 'axios'
 import { 
-    PRODUCT_FAIL,
-    PRODUCT_REQ,
-    PRODUCT_SUCCESS,
+    PRODUCT_LIST_REQUEST,
+    PRODUCT_LIST_SUCCESS,
+    PRODUCT_LIST_FAIL,
+
+    PRODUCT_DETAILS_REQUEST,
     PRODUCT_DETAILS_SUCCESS,
-    PRODUCT_DETAILS_REQ,
-    PRODUCT_DETAILS_FAIL
+    PRODUCT_DETAILS_FAIL,
  } from '../constants/productConstants'
 
 
@@ -13,13 +14,13 @@ import {
 
 export const listProductAction = async (dispatch) => {
     try {
-        dispatch({type: PRODUCT_REQ, payload: []})
+        dispatch({type: PRODUCT_LIST_REQUEST, payload: []})
         const { data } = await axios.get('/api/products/')
-        dispatch({type: PRODUCT_SUCCESS, payload: data})
+        dispatch({type: PRODUCT_LIST_SUCCESS, payload: data})
     }
     catch (error) {
         dispatch({
-            type: PRODUCT_FAIL, 
+            type: PRODUCT_LIST_FAIL, 
             payload: error.response && error.response.data.detail 
             ? error.response.data.detail 
             : error.message
@@ -32,7 +33,7 @@ export const listProductAction = async (dispatch) => {
 export const listProductDetailsAction = (pk) => async (dispatch) => {
     
     try {
-        dispatch({type: PRODUCT_DETAILS_REQ})
+        dispatch({type: PRODUCT_DETAILS_REQUEST})
         const { data } = await axios.get(`/api/products/${pk}`)
         dispatch(
             {

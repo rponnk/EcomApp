@@ -12,7 +12,7 @@ import {
 
  //redux thunk lets us make a function within a function
 
-export const listProductAction = async (dispatch) => {
+export const listProducts = async (dispatch) => {
     try {
         dispatch({type: PRODUCT_LIST_REQUEST, payload: []})
         const { data } = await axios.get('/api/products/')
@@ -30,7 +30,7 @@ export const listProductAction = async (dispatch) => {
 
 
 //grab id of item - pk comes from path we passed in
-export const listProductDetailsAction = (pk) => async (dispatch) => {
+export const listProductDetails = (pk) => async (dispatch) => {
     
     try {
         dispatch({type: PRODUCT_DETAILS_REQUEST})

@@ -27,7 +27,7 @@ const UserListScreen = ({ history }) => {
             history.push('/login');
         }
         
-    }, [dispatch, history, successDelete]);
+    }, [dispatch, history, successDelete, userInfo]);
 
     const deleteById = (id) => {
         if(window.confirm(`Confirm user with id: ${id} for deletion?`)) {

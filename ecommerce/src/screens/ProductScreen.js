@@ -12,7 +12,7 @@ import {
 import Rating from '../components/Rating'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-    listProductDetailsAction
+    listProductDetails
 }  from '../actions/productActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
@@ -26,7 +26,7 @@ function ProductScreen({ match, history }) {
     const {error, loading, product} = productDetails
 
     useEffect(() => {
-        dispatch(listProductDetailsAction(match.params.pk))  
+        dispatch(listProductDetails(match.params.pk))  
 
     //pass params from the function above, below    
     },[dispatch, match]) 

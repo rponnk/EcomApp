@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Table, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { listProducts, deleteProduct } from '../actions/productActions'
+import { 
+    listProducts, 
+    deleteProduct,
+    createProduct,
+ } from '../actions/productActions'
 
 
 function ProductListScreen({ history, match }) {
@@ -12,7 +16,7 @@ function ProductListScreen({ history, match }) {
     const dispatch = useDispatch()
 
     const productList = useSelector(state => state.productList)
-    const { loading, error, products, pages, page } = productList
+    const { loading, error, products } = productList
 
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
@@ -38,7 +42,7 @@ function ProductListScreen({ history, match }) {
     }
 
     const createProductHandler = () => {
-       console.log('create...')
+       dispatch(createProduct)
     }
 
     return (

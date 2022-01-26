@@ -1,3 +1,5 @@
+from re import S
+from unicodedata import category
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
@@ -29,3 +31,38 @@ def deleteProduct(request, pk):
     product.delete()
     return Response('Product has been deleted...')
 
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
+def createProduct(request):
+
+    user = request.user
+    product = Product.objects.create(
+        user=user,
+        name='enter a name...',
+        price=0,
+        brand='enter product brand...',
+        countInStock=0,
+        category='enter product category...',
+        description='enter information about product...'
+    )
+
+    serializer = ProductSerializer(product, many=False)
+    return Response(serializer.data)
+
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])
+def updateProduct(request, pk):
+    data = request.data
+    product = Product.objects.get(_id=pk)
+
+    product.name = data['name']
+    product.price = data['price']
+    product.brand = data['brand']
+    product.countInStock = data['countInStock']
+    product.category = data['category']
+    product.description = data['description']
+
+    product.save()
+
+    serializer = ProductSerializer(product, many=False)
+    return Response(serializer.data)

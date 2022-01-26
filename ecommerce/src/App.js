@@ -18,6 +18,7 @@ import CheckoutScreen from './screens/CheckoutScreen';
 import OrderSummaryScreen from './screens/OrderSummaryScreen';
 import UserListScreen from './screens/UserListScreen';
 import UserEditScreen from './screens/UserEditScreen';
+import ProductListScreen from './screens/ProductListScreen';
 
 function App() {
   return (
@@ -38,8 +39,10 @@ function App() {
               <Route path='/payment' component={PaymentScreen} />
               <Route path='/checkout' component={CheckoutScreen} />
               <Route path='/order/:pk' component={OrderSummaryScreen} />
+
               <Route path='/admin/users' component={UserListScreen} />
               <Route path='/admin/user/:id/' component={UserEditScreen} />
+              <Route path='/admin/productlist' component={ProductListScreen} />
 
             </Container>
             

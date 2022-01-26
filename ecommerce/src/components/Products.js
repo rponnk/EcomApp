@@ -12,7 +12,7 @@ function Products({ product }) {
                 {/*using Link instead of a tag, this will load a component instead of a new page*/}
 
                 <Link to={`/product/${product._id}`}>
-                    <Card.Img src={product.image}/>
+                    <Card.Img src={product.image} />
                 </Link>
 
                 <Card.Body>

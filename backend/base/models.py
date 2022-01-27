@@ -1,7 +1,7 @@
+from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
 
 
 class Product(models.Model):
@@ -56,7 +56,7 @@ class Order(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
-        return str(self.createdAt)
+        return (f"{self.user.first_name} - {str(self.createdAt)[0:10]}")
 
 
 class OrderItem(models.Model):
@@ -70,7 +70,7 @@ class OrderItem(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
-        return str(self.name)
+        return (f"{self.name} for {self.order}")
 
 
 class ShippingAddress(models.Model):
@@ -85,4 +85,4 @@ class ShippingAddress(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
-        return str(self.address)
+        return (f"{self.address} - {self.order}")

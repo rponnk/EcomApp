@@ -15,10 +15,12 @@ import ProfileScreen from './screens/ProfileScreen';
 import ShippingScreen from './screens/ShippingScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import CheckoutScreen from './screens/CheckoutScreen';
-import OrderSummaryScreen from './screens/OrderSummaryScreen';
+import OrderScreen from './screens/OrderScreen';
 import UserListScreen from './screens/UserListScreen';
 import UserEditScreen from './screens/UserEditScreen';
 import ProductListScreen from './screens/ProductListScreen';
+import ProductEditScreen from './screens/ProductEditScreen';
+import OrderListScreen from './screens/OrderListScreen';
 
 function App() {
   return (
@@ -38,11 +40,13 @@ function App() {
               <Route path='/shipping' component={ShippingScreen} />
               <Route path='/payment' component={PaymentScreen} />
               <Route path='/checkout' component={CheckoutScreen} />
-              <Route path='/order/:pk' component={OrderSummaryScreen} />
+              <Route path='/order/:pk' component={OrderScreen} />
 
               <Route path='/admin/users' component={UserListScreen} />
               <Route path='/admin/user/:id/' component={UserEditScreen} />
               <Route path='/admin/productlist' component={ProductListScreen} />
+              <Route path='/admin/product/:id/edit' component={ProductEditScreen} />
+              <Route path='/admin/orderlist' component={OrderListScreen} />
 
             </Container>
             

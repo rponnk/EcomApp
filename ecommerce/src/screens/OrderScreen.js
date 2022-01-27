@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import {  Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
-import { PayPalButton } from 'react-paypal-button-v2'
+import React, { useState, useEffect } from 'react'
+import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { PayPalButton } from 'react-paypal-button-v2'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { getOrderDetails, payOrder } from '../actions/orderActions'
-import { ORDER_PAY_RESET } from '../constants/orderConstants'
+import { getOrderDetails, payOrder, deliverOrder } from '../actions/orderActions'
+import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from '../constants/orderConstants'
 
-
-function OrderSummaryScreen({ match, history }) {
+function OrderScreen({ match, history }) {
     const orderId = match.params.pk
     const dispatch = useDispatch()
 
-    const [sdkReady, setSdkReady] = useState()
+
+    const [sdkReady, setSdkReady] = useState(false)
 
     const orderDetails = useSelector(state => state.orderDetails)
     const { order, error, loading } = orderDetails
@@ -21,19 +21,22 @@ function OrderSummaryScreen({ match, history }) {
     const orderPay = useSelector(state => state.orderPay)
     const { loading: loadingPay, success: successPay } = orderPay
 
+    const orderDeliver = useSelector(state => state.orderDeliver)
+    const { loading: loadingDeliver, success: successDeliver } = orderDeliver
+
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
 
-    //AdC8_C1QWU5iA1eLqxWiP0ZUT2tCNGOHtbKmuooDGXqd_L0EE45qD9HC0E_mHnYK0A1NrZltGb1dXIm5
 
     if (!loading && !error) {
         order.itemsPrice = order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2)
     }
 
+
     const addPayPalScript = () => {
         const script = document.createElement('script')
         script.type = 'text/javascript'
-        script.src = 'https://www.paypal.com/sdk/js?client-id=AdC8_C1QWU5iA1eLqxWiP0ZUT2tCNGOHtbKmuooDGXqd_L0EE45qD9HC0E_mHnYK0A1NrZltGb1dXIm5'
+        script.src = 'https://www.paypal.com/sdk/js?client-id=AeDXja18CkwFUkL-HQPySbzZsiTrN52cG13mf9Yz7KiV2vNnGfTDP0wDEN9sGlhZHrbb_USawcJzVDgn'
         script.async = true
         script.onload = () => {
             setSdkReady(true)
@@ -47,20 +50,27 @@ function OrderSummaryScreen({ match, history }) {
             history.push('/login')
         }
 
-        if (!order || successPay || order._id !== Number(orderId)) {
-            dispatch({type: ORDER_PAY_RESET})
+        if (!order || successPay || order._id !== Number(orderId) || successDeliver) {
+            dispatch({ type: ORDER_PAY_RESET })
+            dispatch({ type: ORDER_DELIVER_RESET })
+
             dispatch(getOrderDetails(orderId))
-        } else if (!order.isPaid){
-            if(!window.paypal) {
+        } else if (!order.isPaid) {
+            if (!window.paypal) {
                 addPayPalScript()
             } else {
                 setSdkReady(true)
             }
         }
-    }, [dispatch, order, orderId, history, userInfo, successPay])
+    }, [dispatch, order, orderId, successPay, successDeliver])
+
 
     const successPaymentHandler = (paymentResult) => {
         dispatch(payOrder(orderId, paymentResult))
+    }
+
+    const deliverHandler = () => {
+        dispatch(deliverOrder(order))
     }
 
     return loading ? (
@@ -69,7 +79,7 @@ function OrderSummaryScreen({ match, history }) {
         <Message variant='danger'>{error}</Message>
     ) : (
                 <div>
-                    <h1>Order: {order._id}</h1>
+                    <p>Order Number: {orderId}</p>
                     <Row>
                         <Col md={8}>
                             <ListGroup variant='flush'>
@@ -87,7 +97,7 @@ function OrderSummaryScreen({ match, history }) {
                                     </p>
 
                                     {order.isDelivered ? (
-                                        <Message variant='success'>Delivered on {order.deliveredAt.substring(0,10)}</Message>
+                                        <Message variant='success'>Delivered on {order.deliveredAt.substring(0, 10)}</Message>
                                     ) : (
                                             <Message variant='warning'>Not Delivered</Message>
                                         )}
@@ -100,7 +110,7 @@ function OrderSummaryScreen({ match, history }) {
                                         {order.paymentMethod}
                                     </p>
                                     {order.isPaid ? (
-                                        <Message variant='success'>Paid on {order.paidAt.substring(0,10)}</Message>
+                                        <Message variant='success'>Paid on {order.paidAt.substring(0, 10)}</Message>
                                     ) : (
                                             <Message variant='warning'>Not Paid</Message>
                                         )}
@@ -171,7 +181,8 @@ function OrderSummaryScreen({ match, history }) {
                                             <Col>Total:</Col>
                                             <Col>${order.totalPrice}</Col>
                                         </Row>
-                                    </ListGroup.Item>       
+                                    </ListGroup.Item>
+
 
                                     {!order.isPaid && (
                                         <ListGroup.Item>
@@ -187,9 +198,19 @@ function OrderSummaryScreen({ match, history }) {
                                                 )}
                                         </ListGroup.Item>
                                     )}
-
                                 </ListGroup>
-                    
+                                {loadingDeliver && <Loader />}
+                                {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                                    <ListGroup.Item>
+                                        <Button
+                                            type='button'
+                                            className='btn btn-block'
+                                            onClick={deliverHandler}
+                                        >
+                                            Mark As Delivered
+                                        </Button>
+                                    </ListGroup.Item>
+                                )}
                             </Card>
                         </Col>
                     </Row>
@@ -197,4 +218,4 @@ function OrderSummaryScreen({ match, history }) {
             )
 }
 
-export default OrderSummaryScreen
+export default OrderScreen

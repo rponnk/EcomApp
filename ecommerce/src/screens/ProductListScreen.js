@@ -39,7 +39,7 @@ function ProductListScreen({ history, match }) {
         if(successCreate) {
             history.push(`/admin/product/${createdProduct._id}/edit/`)
         }
-    }, [dispatch, history, userInfo, successCreate, successDelete, createProduct])
+    }, [dispatch, history, userInfo, successCreate, successDelete, createdProduct])
 
 
     const deleteHandler = (id) => {

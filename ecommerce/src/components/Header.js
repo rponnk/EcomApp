@@ -52,6 +52,22 @@ const Header = () => {
                     }
                     </NavDropdown>
 
+                    {userInfo && userInfo.isAdmin ? (
+                        <NavDropdown title='Admin Menu' id='adminmenu'>
+                            <LinkContainer to='/admin/users'>
+                                <NavDropdown.Item>User List</NavDropdown.Item>
+                            </LinkContainer>
+
+                            <LinkContainer to='/admin/orderlist'>
+                                <NavDropdown.Item>Order List</NavDropdown.Item>
+                            </LinkContainer>
+
+                            <LinkContainer to='/admin/productlist'>
+                                <NavDropdown.Item>Product List</NavDropdown.Item>
+                            </LinkContainer>
+
+                        </NavDropdown>
+                            ): ''}
 
                     {userInfo ? (
                         <NavDropdown title={userInfo.name} id='username'>
@@ -65,20 +81,6 @@ const Header = () => {
                         <Nav.Link >Login <i className="fa-solid fa-right-to-bracket"></i></Nav.Link>
                     </LinkContainer>
                     )}
-
-                    {userInfo && userInfo.isAdmin ? (
-                        <NavDropdown title='Admin Menu' id='adminmenu'>
-                            <LinkContainer to='/admin/users'>
-                                <NavDropdown.Item>User List</NavDropdown.Item>
-                            </LinkContainer>
-
-                            <LinkContainer to='/admin/productlist'>
-                                <NavDropdown.Item>Product List</NavDropdown.Item>
-                            </LinkContainer>
-                            
-
-                        </NavDropdown>
-                            ): ''}
 
                 </Nav>
                 </Navbar.Collapse>

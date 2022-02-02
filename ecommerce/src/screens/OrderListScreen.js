@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Table, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -24,6 +25,7 @@ function OrderListScreen({ history }) {
 
     return (
         <div>
+
             <h1>Orders</h1>
             {loading
                 ? (<Loader />)
@@ -48,7 +50,7 @@ function OrderListScreen({ history }) {
                                     <tr key={order._id}>
                                         <td>{order._id}</td>
                                         <td>{order.user && order.user.name}</td>
-                                        <td>{order.createdAt}</td>
+                                        <td>{order.createdAt.substring(0,10)}</td>
                                         <td>${order.totalPrice}</td>
 
                                         <td>{order.isPaid ? (

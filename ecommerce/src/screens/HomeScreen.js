@@ -8,16 +8,19 @@ import {
     listProducts
 }  from '../actions/productActions'
 
-const HomeScreen = () => {
+const HomeScreen = ({history}) => {
     const dispatch = useDispatch()
     //state.productList is pulling from store
     const productList = useSelector(state => state.productList)
     const {error, loading, products} = productList
 
+    let keyword = history.location.search
+
     useEffect(() => {
         dispatch(listProducts)
                
-    }, [dispatch])
+    }, [dispatch, keyword])
+
     return (
         <div>
             <h1>Latest Products</h1>
@@ -31,7 +34,6 @@ const HomeScreen = () => {
                         <Col key={item._id} sm={12} md={6} lg={4} xl={3}>
                             <Products product={item} />
                         </Col>
-                        
                 ))}
                 </Row>
             }

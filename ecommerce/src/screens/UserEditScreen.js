@@ -49,8 +49,8 @@ function UserEditScreen({ match, history }) {
 
     return (
         <div>
-            <Link to='/admin/userlist'>
-                Go Back
+            <Link to='/admin/users'>
+                <i className='fas fa-arrow-left'></i> Go Back
             </Link>
 
             <FormContainer>

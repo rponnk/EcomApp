@@ -4,7 +4,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout  } from '../actions/userActions';
 import { emptyCart } from '../actions/cartActions';
-
+import  SearchBox from './SearchBox';
 
 
 const Header = () => {
@@ -37,7 +37,7 @@ const Header = () => {
                 <LinkContainer to="/">
                     <Navbar.Brand>ЯS</Navbar.Brand>
                 </LinkContainer>
-
+                
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
@@ -81,7 +81,8 @@ const Header = () => {
                         <Nav.Link >Login <i className="fa-solid fa-right-to-bracket"></i></Nav.Link>
                     </LinkContainer>
                     )}
-
+                    
+                    <SearchBox />
                 </Nav>
                 </Navbar.Collapse>
             </Container>
